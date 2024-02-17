@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "finance-advisor"
+version = "0.1.0"
+description = "A simple script to show capital gains and trailing stops."
+authors = ["Albert Latham <me@albertlatham.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^2.2.0"
+yfinance = "^0.2.36"
+click = "^8.1.7"
+ipykernel = "^6.29.2"
+requests-cache = "^1.1.1"
+prettytable = "^3.9.0"
+ta-lib = "^0.4.28"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
