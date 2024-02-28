@@ -18,7 +18,11 @@ class CsvPortfolioSource(IPortfolioSource, ContextManager):
 
     def __enter__(self):
         print(f"Opening {self.file_path}...")
-        self._positions = pd.read_csv(self.file_path)
+        self._positions = pd.read_csv(self.file_path,
+                                      thousands=',',
+                                      converters={'Price': __parse_dollar_amount,
+                                                  'Cost Basis': __parse_dollar_amount,
+                                                  'Trailing Stop': __parse_dollar_amount})
         self._old_positions = self._positions.copy()
 
         self.positions = self._read_positions()
@@ -40,6 +44,12 @@ class CsvPortfolioSource(IPortfolioSource, ContextManager):
             self._positions.to_csv(new_file_path, index=False)
         else:
             self._positions.to_csv(self.file_path, index=False)
+
+    def __parse_dollar_amount(self, s: str):
+        try:
+            return float(s.replace('$', '').replace(',', ''))
+        except ValueError:
+            return 0
 
     def _read_positions(self) -> Dict[str, Position]:
         """Read positions in from the underlying dataframe."""
